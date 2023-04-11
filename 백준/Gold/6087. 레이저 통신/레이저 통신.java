@@ -1,93 +1,121 @@
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int w, h;
-    static char[][] map;
-    static Node[] target = new Node[2];
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
-
-    static class Node implements Comparable<Node> {
-        int x, y, dir, mirrors;
-
-        public Node(int x, int y, int dir, int mirrors) {
-            this.x = x;
-            this.y = y;
-            this.dir = dir;
-            this.mirrors = mirrors;
-        }
-
-        @Override
-        public int compareTo(Node o) {
-            return this.mirrors - o.mirrors;
-        }
-    }
 
 
+    static int W;
+    static int H;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static char [][] map;
+
+    static int []Cpos_x= new int[2];
+    static int []Cpos_y=new int[2];
+    static int [] dir_x = {1,-1,0,0};
+    static int [] dir_y = {0,0,-1,1};
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        w = Integer.parseInt(st.nextToken());
-        h = Integer.parseInt(st.nextToken());
-
-        map = new char[h][w];
-
-
-        for (int i = 0, idx = 0; i < h; i++) {
-            String s = br.readLine();
-            map[i] = s.toCharArray();
-            for (int j = 0; j < w; j++) {
-                if (map[i][j] == 'C') target[idx++] = new Node(i, j, -5, -1);
-            }
-        }
-
-        System.out.println(bfs(target[0]));
-    }
-
-    private static int bfs(Node start) {
-        int min = Integer.MAX_VALUE;
-        Node goal = target[1];
-        PriorityQueue<Node> q = new PriorityQueue<>();
-        int[][][] visited = new int[4][h][w];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < h; j++) {
-                Arrays.fill(visited[i][j], Integer.MAX_VALUE);
-            }
-        }
-
-        q.offer(start);
-
-        while (!q.isEmpty()) {
-            Node now = q.poll();
-
-            if (now.x == goal.x && now.y == goal.y) {
-                min = Math.min(min, now.mirrors);
-                continue;
-            }
-
-            for (int i = 0; i < 4; i++) {
-                int nextX = now.x + dx[i];
-                int nextY = now.y + dy[i];
-                int nextMirrors = (now.dir == i) ? now.mirrors : now.mirrors + 1;
-                if (!isInRange(nextX, nextY) || map[nextX][nextY] == '*' || Math.abs(now.dir - i) == 2) continue;
-
-                if (visited[i][nextX][nextY] > nextMirrors) {
-                    q.offer(new Node(nextX, nextY, i, nextMirrors));
-                    visited[i][nextX][nextY] = nextMirrors;
+        W = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
+        map = new char[H][W];
+        int cnt =0;
+        for(int i =0;i<H;i++)
+        {
+            String line = br.readLine();
+            for(int j = 0;j< W;j++)
+            {
+                map[i][j] = line.charAt(j);
+                if(map[i][j]=='C')
+                {
+                    Cpos_x[cnt]=i;
+                    Cpos_y[cnt++]=j;
                 }
             }
         }
 
+        System.out.println(solution());
+    }
+
+    private static int solution() {
+
+        int min = Integer.MAX_VALUE;
+        int start_x = Cpos_x[0];
+        int start_y = Cpos_y[0];
+        int [][][]visited = new int[4][H][W];
+        for(int i=0;i<4;i++)
+        {
+            for (int j=0;j<H;j++)
+                Arrays.fill(visited[i][j] , Integer.MAX_VALUE);
+        }
+        Queue<spot> queue = new PriorityQueue<>();
+        queue.offer(new spot(start_x,start_y,5,-1));
+
+        while (!queue.isEmpty())
+        {
+            spot cur = queue.poll();
+
+            if(cur.x==Cpos_x[1] && cur.y==Cpos_y[1])
+            {
+                min = Math.min(min, cur.miror);
+                continue;
+            }
+            for (int i =0;i<4;i++)
+            {
+                if(cur.pre_dir==0 && i ==1) continue;
+                if(cur.pre_dir==1 && i ==0) continue;
+                if(cur.pre_dir==2 && i ==3) continue;
+                if(cur.pre_dir==3 && i ==2) continue;
+                int nx = cur.x + dir_x[i];
+                int ny = cur.y + dir_y[i];
+                if(check(nx,ny))
+                {
+                    int temp = cur.miror;
+                    if(cur.pre_dir!=i)
+                    {
+                        temp++;
+                    }
+                    if(visited[i][nx][ny] > temp)
+                    {
+                        visited[i][nx][ny] = temp;
+                        queue.offer(new spot(nx,ny,i,temp));
+                    }
+                }
+
+            }
+        }
+
+
         return min;
     }
-
-    private static boolean isInRange(int x, int y) {
-        return x >= 0 && x < h && y >= 0 && y < w;
+    private static boolean check(int x,int y)
+    {
+        if(x>=H || x<0) return false;
+        if(y>=W || y<0)return false;
+        if(map[x][y]=='*') return false;
+        return true;
     }
 
+    private static class spot implements Comparable<spot>
+    {
+        int x;
+        int y;
+        int pre_dir;
+        int miror;
+
+        public spot(int x, int y, int pre_dir, int miror) {
+            this.x = x;
+            this.y = y;
+            this.pre_dir = pre_dir;
+            this.miror = miror;
+        }
+
+        @Override
+        public int compareTo(spot o) {
+            return miror -o.miror;
+        }
+    }
 }
