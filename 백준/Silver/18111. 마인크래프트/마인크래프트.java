@@ -43,7 +43,6 @@ public class Main {
             {
                 for(int m =0;m<M;m++)
                 {
-                    if(cur_height == land[n][m]) continue;
                     if(cur_height<land[n][m])
                     {
                         //땅의 높이가 평탄화 시킬 높이보다 높다면 블록제거 작업 실시//
@@ -61,7 +60,7 @@ public class Main {
                 answer_time = time;
                 answer_height = cur_height;
             }
-            
+
         }
         System.out.println(answer_time+" "+answer_height);
 
