@@ -57,13 +57,11 @@ public class Main {
                 }
             }
             if(inventory<0)continue;
-            if(time<answer_time) {
+            if(time<=answer_time) {
                 answer_time = time;
                 answer_height = cur_height;
             }
-            if(time == answer_time && cur_height>answer_height)
-                answer_height = cur_height;
-
+            
         }
         System.out.println(answer_time+" "+answer_height);
 
