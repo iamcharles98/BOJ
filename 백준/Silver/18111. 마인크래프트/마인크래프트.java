@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,7 +54,7 @@ public class Main {
                     time+= (cur_height - land[n][m]);
                 }
             }
-            if(inventory<0)continue;
+            if(inventory<0)break;
             if(time<=answer_time) {
                 answer_time = time;
                 answer_height = cur_height;
