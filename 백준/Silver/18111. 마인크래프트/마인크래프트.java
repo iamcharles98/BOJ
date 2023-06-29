@@ -50,16 +50,8 @@ public class Main {
                         int working = land[n][m] - cur_height;
                         time += 2*working;
                         inventory += working;
+                        continue;
                     }
-                }
-            }
-            for(int n = 0; n<N; n++)
-            {
-                for(int m =0;m<M;m++)
-                {
-                    if(cur_height<=land[n][m])continue;
-                    //쌓기 작업 실시
-                    //쌓을 수 있는 블록이 인벤토리에 없으면 평탄화 불가
                     inventory -= (cur_height - land[n][m]);
                     time+= (cur_height - land[n][m]);
                 }
