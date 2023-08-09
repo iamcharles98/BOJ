@@ -45,17 +45,18 @@ public class Main {
 
         findDistance();
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (DISTANCE[i][j] == Integer.MAX_VALUE) {
-                    System.out.print(-1 + " ");
-                }
-                else {
-                    System.out.print(DISTANCE[i][j] + " ");
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<N; i++){
+            for(int j=0; j<M; j++){
+                if(DISTANCE[i][j]!=Integer.MAX_VALUE){
+                    sb.append(DISTANCE[i][j]).append(' ');
+                } else{
+                    sb.append(-1).append(' ');
                 }
             }
-            System.out.println("");
+            sb.append('\n');
         }
+        System.out.println(sb);
     }
 
     private static void findDistance() {
