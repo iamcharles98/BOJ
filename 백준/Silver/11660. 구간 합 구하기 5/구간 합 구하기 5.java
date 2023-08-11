@@ -11,7 +11,6 @@ public class Main {
 
     static int M;
 
-    static int[][] map;
 
     static int[][] dp;
 
@@ -21,12 +20,10 @@ public class Main {
         N = Integer.parseInt(stringTokenizer.nextToken());
         M = Integer.parseInt(stringTokenizer.nextToken());
         dp = new int[N + 1][N + 1];
-        map = new int[N + 1][N + 1];
         for (int i = 1; i <= N; i++) {
             stringTokenizer = new StringTokenizer(bufferedReader.readLine());
             for (int j = 1; j <= N; j++) {
-                map[i][j] = Integer.parseInt(stringTokenizer.nextToken());
-                dp[i][j] = dp[i][j - 1] + map[i][j];
+                dp[i][j] = dp[i][j - 1] + dp[i-1][j] - dp[i-1][j-1] +  Integer.parseInt(stringTokenizer.nextToken());
             }
         }
 
@@ -45,10 +42,6 @@ public class Main {
 
     private static int getSum(int x1, int y1, int x2, int y2) {
         // 최대 합이 약 10억 이기 때문에, int 를 반환해도 괜찮다 //
-        int sum = 0;
-        for (int i = x1; i <= x2; i++) {
-            sum += (dp[i][y2] - dp[i][y1-1] );
-        }
-        return sum;
+        return dp[x2][y2] - dp[x2][y1-1] - dp[x1-1][y2] + dp[x1-1][y1-1];
     }
 }
