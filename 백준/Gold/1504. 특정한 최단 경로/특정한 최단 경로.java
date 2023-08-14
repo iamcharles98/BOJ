@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +12,7 @@ public class Main {
     static int visitNode1;
     static int visitNode2;
     static List<ArrayList<Node>> graph;
+    static final int INF = 200000000;
 
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -41,34 +41,21 @@ public class Main {
         int dist1 = dijkstra(startNode, visitNode1);
         int dist2 = dijkstra(visitNode1, visitNode2);
         int dist3 = dijkstra(visitNode2, endNode);
+        int res1 = dist1 + dist2 + dist3;
 
         int dist4 = dijkstra(startNode, visitNode2);
         int dist5 = dijkstra(visitNode2, visitNode1);
         int dist6 = dijkstra(visitNode1, endNode);
+        int res2 = dist4 + dist5 + dist6;
 
+        int ans = (res1 >= INF && res2 >= INF) ? -1 : Math.min(res1, res2);
 
-        int d1 = -1, d2 = -1;
-        if (dist1 != Integer.MAX_VALUE && dist2 != Integer.MAX_VALUE && dist3 != Integer.MAX_VALUE) {
-            d1 = dist1 + dist2 + dist3;
-        }
-        if (dist4 != Integer.MAX_VALUE && dist5 != Integer.MAX_VALUE && dist6 != Integer.MAX_VALUE) {
-            d2 = dist4 + dist5 + dist6;
-        }
-
-        if (d1 != -1 && d2 != -1) {
-            System.out.println(Math.min(d1, d2));
-            return;
-        } else if (d1 == -1) {
-            System.out.println(d2);
-            return;
-        }
-        System.out.println(d1);
-
+        System.out.println(ans);
     }
 
     private static int dijkstra(int startNode, int targetNode) {
         int[] dist = new int[N + 1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(dist, INF);
         dist[startNode] = 0;
         PriorityQueue<Node> queue = new PriorityQueue<>(new Comparator<Node>() {
             @Override
