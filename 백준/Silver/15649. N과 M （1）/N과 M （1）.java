@@ -1,45 +1,52 @@
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.StringTokenizer;
-
+ 
 public class Main {
-
-
-    public static void main(String[] args) throws IOException {
-        int N, M;
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
-        N = Integer.parseInt(stringTokenizer.nextToken());
-        M = Integer.parseInt(stringTokenizer.nextToken());
-
-
-        List<Integer> list = new ArrayList<>();
-
-        recur(list, 0, M, N);
-
-
-    }
-
-    private static void recur(List<Integer> visit, int cnt, int M, int N) {
-
-         if (cnt == M) {
-            for(int i : visit) {
-                System.out.print(i+" ");
-            }
-            System.out.println("");
-            return;
-        }
-        for (int i = 1; i <= N; i++) {
-            if (!visit.contains(i)) {
-                visit.add(i);
-                recur(visit, cnt + 1, M, N);
-                visit.remove(visit.indexOf(i));
-            }
-        }
-    }
-
+ 
+	public static int N;	// 정적변수로 변경
+	public static int M;	// 정적변수로 변경
+	public static int[] arr;
+	public static boolean[] visit;
+	public static StringBuilder sb = new StringBuilder();
+ 
+	public static void main(String[] args) throws IOException {
+ 
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+ 
+		StringTokenizer st = new StringTokenizer(br.readLine());
+ 
+		// 정적변수 N과 M을 초기화해준다.
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+ 
+		arr = new int[M];
+		visit = new boolean[N];
+        
+		// 정적변수를 쓰면 되기 때문에 굳이 N과 M을 넘겨줄 필요 없다.
+		dfs(0);
+		System.out.println(sb);
+ 
+	}
+ 
+	public static void dfs(int depth) {
+		if (depth == M) {
+			for (int val : arr) {
+				sb.append(val).append(' ');
+			}
+			sb.append('\n');
+			return;
+		}
+ 
+		for (int i = 0; i < N; i++) {
+			if (!visit[i]) {
+				visit[i] = true;
+				arr[depth] = i + 1;
+				dfs(depth + 1);
+				visit[i] = false;
+			}
+		}
+	}
+ 
 }
