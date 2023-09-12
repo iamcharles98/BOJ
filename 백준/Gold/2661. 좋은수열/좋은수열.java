@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,7 +46,6 @@ public class Main {
      */
     static int N;
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    static List<Integer> integerList = new ArrayList<>();
     static int[] availNum = {1, 2, 3};
     static String answer = "";
 
@@ -84,7 +82,7 @@ public class Main {
         }
         // 부분 수열 검사
         int len = series.length() / 2;
-        while (len > 0) {
+        while (len > 1) {
             String h1 = series.substring(series.length() - len, series.length());
             String h2 = series.substring(series.length() - (2 * len), series.length() - len);
             if (h1.equals(h2)) {
