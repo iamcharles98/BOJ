@@ -8,7 +8,12 @@ import java.util.*;
 public class Main {
 
     static int V, E;
-    static List<Edge> graph = new ArrayList<>();
+    static Queue<Edge> graph = new PriorityQueue<>(new Comparator<Edge>() {
+        @Override
+        public int compare(Edge o1, Edge o2) {
+            return o1.weight - o2.weight;
+        }
+    });
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     static int[] parent;
     static int MIN_COST = 0;
@@ -23,6 +28,7 @@ public class Main {
             this.to = to;
             this.weight = weight;
         }
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -37,13 +43,6 @@ public class Main {
             int weight = Integer.parseInt(stringTokenizer.nextToken());
             graph.add(new Edge(from, to, weight));
         }
-        //가중치를 오름차순으로 정렬
-        Collections.sort(graph, new Comparator<Edge>() {
-            @Override
-            public int compare(Edge o1, Edge o2) {
-                return o1.weight - o2.weight;
-            }
-        });
         // parent 배열 초기화
         for (int i = 1; i <= V; i++) {
             parent[i] = i;
@@ -54,15 +53,14 @@ public class Main {
     private static void findMst() {
         int edgeCount = 0;
 
-        while (edgeCount != V-1) {
-            for (Edge e : graph) {
-                int p1 = find(e.from);
-                int p2 = find(e.to);
-                if (p1 != p2) {
-                    edgeCount++;
-                    MIN_COST += e.weight;
-                    union(p1, p2);
-                }
+        while (edgeCount != V - 1) {
+            Edge e = graph.poll();
+            int p1 = find(e.from);
+            int p2 = find(e.to);
+            if (p1 != p2) {
+                edgeCount++;
+                MIN_COST += e.weight;
+                union(p1, p2);
             }
         }
         System.out.println(MIN_COST);
@@ -78,7 +76,7 @@ public class Main {
     private static void union(int n1, int n2) {
         if (n1 < n2) {
             parent[n2] = n1;
-        }else {
+        } else {
             parent[n1] = n2;
         }
     }
