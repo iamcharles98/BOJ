@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,7 +30,7 @@ public class Main {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
             for (int j = 1; j <= N; j++) {
                 int w = Integer.parseInt(stringTokenizer.nextToken());
-                if (i != j) {
+                if (w!=0) {
                     graph.get(i).add(new Edge(j, w));
                 }
             }
