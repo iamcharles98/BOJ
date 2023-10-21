@@ -25,11 +25,11 @@ class Solution {
         }
     }
     public int solution(int n) {
-        recur(0,n);
+        recur(1,n);
         return count;
     }
     private void recur(int depth, int n) {
-        if (depth == n) {
+        if (depth == n+1) {
             count ++;
             return;
         }
