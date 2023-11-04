@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +13,7 @@ public class Main {
     static int N;
     static List<Integer> heights = new ArrayList<>();
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    static long answer = 0;
+    static int answer = 0;
 
 
     public static void main(String[] args) throws IOException {
@@ -30,17 +29,17 @@ public class Main {
     private static void solution() {
         int elsaUpsnowIdx = 0;
         int elsaDownSnowIdx = heights.size() - 1;
-        long diff = Long.MAX_VALUE;
+        int diff = Integer.MAX_VALUE;
 
         while (elsaUpsnowIdx < elsaDownSnowIdx) {
-            long elsaSnowMan = heights.get(elsaUpsnowIdx) + heights.get(elsaDownSnowIdx);
+            int elsaSnowMan = heights.get(elsaUpsnowIdx) + heights.get(elsaDownSnowIdx);
 
             int annaUpSnowIdx = elsaUpsnowIdx + 1;
             int annaDownSnowIdx = elsaDownSnowIdx - 1;
 
             while (annaUpSnowIdx < annaDownSnowIdx) {
-                long annaSnowMan = heights.get(annaUpSnowIdx) + heights.get(annaDownSnowIdx);
-                long curDiff = elsaSnowMan - annaSnowMan;
+                int annaSnowMan = heights.get(annaUpSnowIdx) + heights.get(annaDownSnowIdx);
+                int curDiff = elsaSnowMan - annaSnowMan;
 
                 if (diff > Math.abs(curDiff)) {
                     diff = Math.abs(curDiff);
