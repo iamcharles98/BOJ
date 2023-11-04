@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,7 +49,10 @@ public class Main {
             while (left < right) {
                 ThreePoint threePoint = new ThreePoint(i, left, right);
                 long total = sumOf(threePoint);
-
+                if(total == 0) {
+                    answer = threePoint;
+                    return;
+                }
                 if(diff > Math.abs(total)) {
                     diff = Math.abs(total);
                     answer = threePoint;
