@@ -2,25 +2,8 @@ import java.util.*;
 import java.lang.*;
 
 class Solution {
-    /*
-    괄호 개수의 짝맞추기
-    균형잡힌 문자열 + 올바른 문자열
-    균형잡힌 문자열 -> 올바른 문자열로 변환
-    
-    1. 균형잡힌 괄호 문자열 파싱하기 -> 괄호 숫자 카운팅
-    
-    2. 올바른 괄호 문자열인지 체크
-    
-    3. 맞다면 v에 대해 1부터 다시 진행후 
-    
-    4. 
-    
-    */
-    String rightString = "";
     public String solution(String p) {
-        String answer = "";
-        answer = step1(p);
-        return answer;
+        return step1(p);
     }
     
     private String step1(String p) {
@@ -35,11 +18,11 @@ class Solution {
         return step2(token); 
     }
     private String step2(String[] token) {
-        String empty = "(";
-        empty += step1(token[1]);
-        empty += ")";
-        empty += removeAndReverse(token[0]);
-        return empty;
+        String result = "(";
+        result += step1(token[1]);
+        result += ")";
+        result += removeAndReverse(token[0]);
+        return result;
     }
     
     private String removeAndReverse(String u) {
@@ -62,7 +45,6 @@ class Solution {
         int cnt = 0;
         for(int i=0; i<p.length(); i++) {
             char cur = p.charAt(i);
-            
             if(cur == '(') {
                 cnt ++;
             }
