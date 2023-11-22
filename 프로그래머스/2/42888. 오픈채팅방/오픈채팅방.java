@@ -22,16 +22,16 @@ class Solution {
         public void doChange(String userId, String nickName) {
             userMap.put(userId, nickName);
         }
-        public String getResult() {
-            StringJoiner sj = new StringJoiner(DELIMITER);
+        public List<String> getResult() {
+            List<String> result = new ArrayList<>();
             for(String msg : messages) {
                 String[] token = msg.split(DELIMITER);
-                sj.add(userMap.get(token[0]) + token[1]);
+                result.add(userMap.get(token[0]) + token[1]);
             }
-            return sj.toString();
+            return result;
         }
     }
-    public String[] solution(String[] record) {
+    public List<String> solution(String[] record) {
         History history = new History();
         for(String reco : record) {
             String [] token = reco.split(" ");
@@ -50,6 +50,6 @@ class Solution {
             }
         }
         
-        return history.getResult().split("-");
+        return history.getResult();
     }
 }
