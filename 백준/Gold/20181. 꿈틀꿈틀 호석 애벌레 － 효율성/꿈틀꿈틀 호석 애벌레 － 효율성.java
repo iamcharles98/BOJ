@@ -3,8 +3,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -23,33 +21,26 @@ public class Main {
             foods[i] = Integer.parseInt(stringTokenizer.nextToken());
         }
 
-        findMaxEnergy();
-        System.out.println(answer);
+        System.out.println(findMaxEnergy());
     }
 
-    private static void findMaxEnergy() {
-        int beforeEnd = 0;
-        long beforeEnergy = 0;
-        for (int curStart = 0; curStart < foods.length; curStart++) {
-            int curEnd = curStart;
-            long curSum = 0;
-            while (curSum < K && curEnd < foods.length) {
-                curSum += foods[curEnd++];
+    private static long findMaxEnergy() {
+        long[] dp = new long[foods.length];
+        int start = 0, end = 0;
+        long curSum = 0;
+        while (end < foods.length) {
+            curSum += foods[end];
+            if (end > 0) {
+                dp[end] = dp[end - 1];
             }
-            long curEnergy = curSum - K;
-            if (curEnergy > beforeEnergy && curStart <= beforeEnd) {
-                beforeEnd = curEnd - 1;
-                beforeEnergy = curEnergy;
-            }
-            if (curStart > beforeEnd) {
-                answer += beforeEnergy;
-                beforeEnd = curEnd - 1;
-                beforeEnergy = curEnergy;
-            }
-        }
-        if(beforeEnergy > 0) {
-            answer += beforeEnergy;
-        }
-    }
 
+            while (curSum >= K) {
+                dp[end] = Math.max(dp[end], dp[Math.max(0,start-1)] + curSum - K);
+                curSum -= foods[start];
+                start +=1;
+            }
+            end++;
+        }
+        return dp[foods.length-1];
+    }
 }
