@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,14 +30,14 @@ public class Main {
 
     private static void findMaxEnergy() {
         int beforeEnd = 0;
-        int beforeEnergy = -1;
+        long beforeEnergy = -1;
         for (int curStart = 0; curStart < foods.length; curStart++) {
             int curEnd = curStart;
-            int curSum = 0;
+            long curSum = 0;
             while (curSum < K && curEnd < foods.length) {
                 curSum += foods[curEnd++];
             }
-            int curEnergy = curSum - K;
+            long curEnergy = curSum - K;
             if (curEnergy > beforeEnergy && curStart <= beforeEnd) {
                 beforeEnd = curEnd - 1;
                 beforeEnergy = curEnergy;
@@ -46,7 +48,9 @@ public class Main {
                 beforeEnergy = curEnergy;
             }
         }
-        answer += beforeEnergy;
+        if(beforeEnergy > 0) {
+            answer += beforeEnergy;
+        }
     }
 
 }
