@@ -24,13 +24,12 @@ public class Main {
         }
 
         findMaxEnergy();
-
         System.out.println(answer);
     }
 
     private static void findMaxEnergy() {
         int beforeEnd = 0;
-        long beforeEnergy = -1;
+        long beforeEnergy = 0;
         for (int curStart = 0; curStart < foods.length; curStart++) {
             int curEnd = curStart;
             long curSum = 0;
