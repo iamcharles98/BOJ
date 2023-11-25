@@ -48,7 +48,7 @@ class Solution {
         return false;
     }
     private boolean canOpen(int [][] key, int[][] minLock) {
-        if(key.length < minLock.length || key[0].length < minLock[0].length) {
+        if(key.length < minLock.length) {
             return false;
         }
         int row = minLock.length;
