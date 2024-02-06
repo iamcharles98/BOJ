@@ -60,13 +60,6 @@ public class Main {
             }
         }
 
-        Collections.sort(onlyComponent, new Comparator<Set<Kid>>() {
-            @Override
-            public int compare(Set<Kid> o1, Set<Kid> o2) {
-                return getTotalCandyOf(o2) - getTotalCandyOf(o1);
-            }
-        });
-
         int[][] dp = new int[onlyComponent.size() + 1][K];
 
         for (int i = 0; i < onlyComponent.size(); i++) {
