@@ -93,7 +93,6 @@ public class Main {
             }
         }
         return size;
-
     }
 
     private static void printAnswer() {
@@ -109,7 +108,7 @@ public class Main {
 
     private static void findMoveWay() {
         for (Pos wall : walls) {
-            ANSWER[wall.x][wall.y] = find(wall)%10;
+            ANSWER[wall.x][wall.y] = find(wall) % 10;
         }
     }
 
@@ -123,10 +122,10 @@ public class Main {
             if (nx < 0 || ny < 0 || ny >= M || nx >= N || MAP[nx][ny] == 1) {
                 continue;
             }
-            adjacentComponents.add(MAP[nx][ny]);
-        }
-        for (int componentId : adjacentComponents) {
-            moveCnt += componentMap.get(componentId);
+            if (adjacentComponents.add(MAP[nx][ny])) {
+                moveCnt += componentMap.get(MAP[nx][ny]);
+            }
+            
         }
         return moveCnt;
     }
