@@ -56,7 +56,7 @@ public class Main {
         }
         Set<Integer> noCrossingLine = new HashSet<>();
         int len = LIS.size()-1;
-        while (!backtrack.isEmpty()) {
+        while (!backtrack.isEmpty() || len >= 0) {
             if(backtrack.peek().order == len) {
                 noCrossingLine.add(backtrack.peek().number);
                 len--;
