@@ -16,14 +16,14 @@ public class Main {
     static int[] numbers;
     static int size = 4_000_000;
     static int[] SUM = new int[size * 2 + 1];
-
     static long cnt = 0l;
 
     public static void main(String[] args) throws IOException {
         int[] input = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        numbers = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+
         N = input[0];
         S = input[1];
+        numbers = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
         if (N == 1) {
             if (S == numbers[0]) {
@@ -35,7 +35,7 @@ public class Main {
         }
 
         findLeftSubSum(0, 0);
-        findRightSubSum((N + 1) / 2 + 1, 0);
+        findRightSubSum(N / 2 + 1, 0);
 
         if (S == 0) {
             cnt -= 1;
@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void findLeftSubSum(int idx, int sum) {
-        if (idx == (N + 1) / 2 + 1) {
+        if (idx == N / 2 + 1) {
             SUM[size + sum]++;
             return;
         }
@@ -55,7 +55,7 @@ public class Main {
 
     public static void findRightSubSum(int idx, int sum) {
         if (idx == N) {
-            cnt += SUM[(S - sum) + size];
+            cnt += SUM[size + S - sum];
             return;
         }
 
