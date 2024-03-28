@@ -16,21 +16,21 @@ import java.lang.*;
 
 
 class Solution {
-    
-    
+     
     static int N;
     static int makeNum ;
     static int maxRound = 0;
     static Set<Integer> pocket = new HashSet<>();
     static Set<Integer> garbage = new HashSet<>();
     static Queue<Integer> remainCards = new LinkedList<>();
+    
     public int solution(int coin, int[] cards) {
         N = cards.length;
         makeNum = N+1;
         for(int i=0;i<N/3; i++) {
             pocket.add(cards[i]);
         }
-        System.out.println(pocket);
+
         for(int i=N/3; i<cards.length; i++) {
             remainCards.add(cards[i]);
         }
@@ -44,52 +44,64 @@ class Solution {
             garbage.add(remainCards.poll());
             garbage.add(remainCards.poll());
             
-            if(canSuggestIn()) {
+            if(canSuggest()) {
                 continue;
             }
             
             if(coin>=1) {
-                int card1 = -1, card2 =-1;
-                boolean flag = false;
-                for(int gCard : garbage) {
-                    card1 = gCard;
-                    if(pocket.contains(makeNum - card1)) {
-                        card2 = makeNum - card1;
-                        break;
-                    }
-                }
-                if(card2 != -1) {
-                    garbage.remove(card1);
-                    pocket.remove(card2);
+                if(canSuggestUsingOneCoin()) {
                     coin-=1;
                     continue;
                 }
             }
             
             if(coin>=2) {
-                int card1 = -1, card2 =-1;
-                for(int gCard : garbage) {
-                    card1 = gCard;
-                    if(garbage.contains(makeNum - gCard)) {
-                        card2 = makeNum - gCard;
-                        break;
-                    }
-                }
-                if(card2 != -1) {
-                    garbage.remove(card1);
-                    garbage.remove(card2);
-                    coin-=2;
-                    continue;
-                }
+               if(canSuggestUsingTwoCoin()) {
+                   coin-=2;
+                   continue;
+               }
             }
             break;
         }
         
-        
         return maxRound;
     }
-     
-    public boolean canSuggestIn() {
+    
+    public boolean canSuggestUsingTwoCoin() {
+        int card1 = -1, card2 =-1;
+        for(int gCard : garbage) {
+            card1 = gCard;
+            if(garbage.contains(makeNum - card1)) {
+                card2 = makeNum - card1;
+                break;
+            }
+        }
+        if(card2 != -1) {
+            garbage.remove(card1);
+            garbage.remove(card2);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean canSuggestUsingOneCoin() {
+        int card1 = -1, card2 =-1;
+        for(int gCard : garbage) {
+            card1 = gCard;
+            if(pocket.contains(makeNum - card1)) {
+                card2 = makeNum - card1;
+                break;
+            }
+        }
+        if(card2 != -1) {
+            garbage.remove(card1);
+            pocket.remove(card2);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean canSuggest() {
         int card1 = -1, card2 = -1;
         for(int card : pocket) {
             card1 = card;
