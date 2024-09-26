@@ -1,64 +1,65 @@
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 
 public class Main {
-    static int N;
-    static int K;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static int curPos;
+    static int hidePos;
+
+    static class MoveInfo {
+        int pos;
+        int moveCnt;
+
+        public MoveInfo(int pos, int moveCnt) {
+            this.pos = pos;
+            this.moveCnt = moveCnt;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
-        N = Integer.parseInt(stringTokenizer.nextToken());
-        K = Integer.parseInt(stringTokenizer.nextToken());
 
+        int[] input = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        curPos = input[0];
+        hidePos = input[1];
 
-        System.out.println(solution());
-    }
+        if (curPos >= hidePos) {
+            System.out.println(curPos - hidePos);
+            return;
+        }
 
-    private static int solution() {
-        if (N >= K) return N - K;
-
-
-        int[] timeList = new int[100001];
+        Queue<MoveInfo> pq = new LinkedList<>();
+        int minTime = hidePos - curPos;
+        pq.offer(new MoveInfo(curPos, 0));
         boolean[] visit = new boolean[100001];
-        for (int i = 0; i < timeList.length; i++) {
-            timeList[i] = 0;
-            visit[i] = false;
+        while (!pq.isEmpty()) {
+            MoveInfo cur = pq.poll();
+            if (cur.pos > 100000 || visit[cur.pos]) {
+                continue;
+            }
+            visit[cur.pos] = true;
+
+            if (cur.pos >= hidePos) {
+                if (minTime >= cur.moveCnt + (cur.pos - hidePos)) {
+                    minTime = cur.moveCnt + (cur.pos - hidePos);
+                }
+                continue;
+            }
+
+            pq.offer(new MoveInfo(cur.pos + 1, cur.moveCnt + 1));
+            if (cur.pos > 0) {
+                pq.offer(new MoveInfo(cur.pos - 1, cur.moveCnt + 1));
+                pq.offer(new MoveInfo(cur.pos * 2, cur.moveCnt + 1));
+            }
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(N);
-        visit[N] = true;
-        int curTime = 0;
-        while (true) {
-            int curPos = queue.poll();
+        System.out.println(minTime);
 
-            curTime = timeList[curPos];
-            if (curPos == K) {
-                return timeList[curPos];
-            }
 
-            if (curPos + 1 < 100000 && !visit[curPos + 1]) {
-                queue.offer(curPos + 1);
-                timeList[curPos + 1] = curTime + 1;
-                visit[curPos + 1] = true;
-            }
-            if (curPos - 1 >= 0 && !visit[curPos - 1]) {
-                queue.offer(curPos - 1);
-                timeList[curPos - 1] = curTime + 1;
-                visit[curPos - 1] = true;
-            }
-            if (curPos * 2 <= 100000 && !visit[curPos * 2]) {
-                queue.offer(curPos * 2);
-                timeList[curPos * 2] = curTime + 1;
-                visit[curPos * 2] = true;
-            }
-
-        }
     }
-
 }
