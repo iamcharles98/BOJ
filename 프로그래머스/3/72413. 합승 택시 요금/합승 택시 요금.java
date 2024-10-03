@@ -44,13 +44,13 @@ class Solution {
             graph.get(to).add(new Node(from, cost));
         }
         
-        for(int i=1; i<=n; i++) {
-             findPath(i, dist[i]);
-        }
+        findPath(s, dist[s]);
+        findPath(a, dist[a]);
+        findPath(b, dist[b]);
         
-        answer = dist[s][a] + dist[s][b]; 
+        answer = Integer.MAX_VALUE;
         for(int midPoint=1; midPoint<=n; midPoint++) {
-            answer = Math.min(answer,dist[s][midPoint] + dist[midPoint][a] + dist[midPoint][b]);
+            answer = Math.min(answer,dist[s][midPoint] + dist[a][midPoint] + dist[b][midPoint]);
         }
         
         return answer;
