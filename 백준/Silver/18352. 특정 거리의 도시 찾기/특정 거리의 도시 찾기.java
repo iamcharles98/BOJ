@@ -1,78 +1,67 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-   
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static int N, M, K, X;
-    static int MAX = 1_000_001;
-
-    public static void main(String[] args) throws IOException {
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        X = Integer.parseInt(st.nextToken());
-
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-
-        for (int i = 1; i <= N; i++) {
-            graph.put(i, new ArrayList<>());
-        }
-
-        for (int i = 1; i <= M; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            int from = Integer.parseInt(st.nextToken());
-            int to = Integer.parseInt(st.nextToken());
-
-            graph.get(from).add(to);
-        }
-        int[] dist = new int[N + 1];
-        Arrays.fill(dist, MAX);
-        dist[X] = 0;
-
-        findPath(X, graph, dist);
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 1; i <= N; i++) {
-            if (dist[i] == K) {
-                sb.append(i).append("\n");
-            }
-        }
-        String ans = sb.toString();
-        if (ans.equals("")) {
-            System.out.print(-1);
-        } else {
-            System.out.print(ans);
-        }
-
-    }
-
-    private static void findPath(int x, Map<Integer, List<Integer>> graph, int[] dist) {
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        pq.add(x);
-
-
-        while (!pq.isEmpty()) {
-            int cur = pq.poll();
-
-            for (int adj : graph.get(cur)) {
-                if (dist[adj] > dist[cur] + 1) {
-                    dist[adj] = dist[cur] + 1;
-                    pq.add(adj);
-                }
-            }
-        }
-    }
-
-
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	static ArrayDeque<Integer>[] graph;
+	static int[] visited;
+	static int k;
+	static int x;
+	static ArrayList<Integer> answer = new ArrayList<>();
+	
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine(), " ");
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
+		k = Integer.parseInt(st.nextToken());
+		x = Integer.parseInt(st.nextToken());
+		
+		graph = new ArrayDeque[n+1];
+		visited = new int[n+1];
+		Arrays.fill(visited, -1);
+		
+		for(int i=1; i<=n; i++) {
+			graph[i] = new ArrayDeque<>();
+		}
+		
+		for(int i=0; i<m; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			
+			graph[a].addLast(b);
+		}
+		
+		BFS();
+		
+		if(answer.size() == 0) {
+			System.out.println(-1);
+		} else {
+			Collections.sort(answer);
+			for(int ans : answer) {
+				System.out.println(ans);
+			}
+		}
+	}
+	
+	public static void BFS() {
+		ArrayDeque<Integer> queue = new ArrayDeque<>();
+		queue.addLast(x);
+		visited[x] = 0;
+		
+		while(!queue.isEmpty()) {
+			int now = queue.pollFirst();
+			if(visited[now] > k) break;
+			if(visited[now] == k) {
+				answer.add(now);
+			}
+			
+			for(int next : graph[now]) {
+				if(visited[next] != -1) continue;
+				queue.addLast(next);
+				visited[next] = visited[now] + 1;
+			}
+		}
+	}
 }
