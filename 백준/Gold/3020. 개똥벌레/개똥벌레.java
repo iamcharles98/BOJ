@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-  
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static int N, H;
 
@@ -29,16 +29,15 @@ public class Main {
             sector[H] -= 1;
         }
         int min = Integer.MAX_VALUE;
-
-        for (int i = 1; i < sector.length - 1; i++) {
-            sector[i] = sector[i - 1] + sector[i];
-            if (min > sector[i]) {
-                min = sector[i];
-            }
-        }
         int count = 0;
-        for (int num : sector) {
-            if (num == min) {
+        int now = 0;
+        
+        for (int i = 0; i < sector.length - 1; i++) {
+            now += sector[i];
+            if (min > now) {
+                min = now;
+                count = 1;
+            } else if(now == min) {
                 count++;
             }
         }
