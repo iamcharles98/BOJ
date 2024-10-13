@@ -10,7 +10,7 @@ public class Main {
     static int[] pos = new int[100001];
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    static class Move implements Comparable<Move> {
+    static class Move {
         int pos;
         int count;
 
@@ -19,10 +19,6 @@ public class Main {
             this.count = count;
         }
 
-        @Override
-        public int compareTo(Move o) {
-            return count - o.count;
-        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -35,7 +31,7 @@ public class Main {
             return;
         }
 
-        Queue<Move> queue = new PriorityQueue<>();
+        Queue<Move> queue = new LinkedList<>();
         queue.add(new Move(N, 0));
         Arrays.fill(pos, Integer.MAX_VALUE);
 
@@ -54,11 +50,11 @@ public class Main {
 
             pos[cur.pos] = cur.count;
 
-            queue.add(new Move(cur.pos + 1, cur.count + 1));
             if (cur.pos != 0) {
-                queue.add(new Move(cur.pos - 1, cur.count + 1));
                 queue.add(new Move(cur.pos * 2, cur.count));
+                queue.add(new Move(cur.pos - 1, cur.count + 1));
             }
+            queue.add(new Move(cur.pos + 1, cur.count + 1));
         }
 
         System.out.println(minTime);
