@@ -7,11 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Main {
-
+ 
     static int N;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static final int TEAM = 1;
-    static final int NOT_TEAM = 2;
+    static int count;
 
     public static void main(String[] args) throws IOException {
         N = Integer.parseInt(br.readLine());
@@ -29,29 +28,31 @@ public class Main {
     }
 
     static int getNotTeam(int[] relation) {
-        int[] board = new int[relation.length];
-
+        boolean[] visit = new boolean[relation.length];
+        boolean[] check = new boolean[relation.length];
+        count = 0;
         for (int i = 1; i < relation.length; i++) {
-            if (board[i] == 0) {
-                dfs(i, new HashSet<>(), relation, board);
+            if (!check[i]) {
+                dfs(i, relation, visit, check);
             }
         }
 
-        return relation.length - 1 - board[0];
+        return relation.length - 1 - count;
     }
 
-    private static void dfs(int i, Set<Integer> visit, int[] relation, int[] board) {
-        if(board[i] != 0) {
+    private static void dfs(int i, int[] relation, boolean[] visit, boolean[] check) {
+
+        if (check[i]) {
             return;
         }
-        if (!visit.add(i)) {
-            board[i] = TEAM;
-            board[0]++;
+        if (visit[i]) {
+            check[i] = true;
+            count++;
         }
-
-        dfs(relation[i], visit, relation, board);
-        board[i] = NOT_TEAM;
-        
+        visit[i] = true;
+        dfs(relation[i], relation, visit, check);
+        check[i] = true;
+        visit[i] = false;
     }
 
 }
