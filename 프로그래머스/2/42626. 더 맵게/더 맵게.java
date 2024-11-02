@@ -15,7 +15,7 @@ class Solution {
             answer++;
         }
         
-        if(qu.size()==1 && qu.peek() < K) {
+        if(qu.peek() < K) {
             return -1;
         }
         return answer;
