@@ -4,10 +4,10 @@ class Solution {
  
     public int solution(int n) {
         
-        int baseCount = binaryOneCount(n);
+        int baseCount = Integer.bitCount(n);
         int answer = n+1;
         
-        while(binaryOneCount(answer) != baseCount) {
+        while(Integer.bitCount(answer) != baseCount) {
             answer++;
         }
         
